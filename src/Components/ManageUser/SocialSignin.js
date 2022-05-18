@@ -1,11 +1,9 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub, FaFacebook } from "react-icons/fa";
 import auth from "../../firebase.int";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading";
-import { async } from "@firebase/util";
 
 const SocialSignin = () => {
   const navigate = useNavigate();
@@ -13,6 +11,9 @@ const SocialSignin = () => {
     useSignInWithGoogle(auth);
   if (googleLoading) {
     return <Loading />;
+  }
+  if (googleError) {
+    return console.log(googleError);
   }
   return (
     <>
