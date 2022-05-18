@@ -15,7 +15,7 @@ const Footer = () => {
         ></path>
       </svg>
       <p className="absolute bottom-0 inset-x-0 mt-10 mb-1  p-2 text-center">
-        ToDo APP &copy; {new Date().getFullYear()} by{" "}
+        ToDo Mongo &copy; {new Date().getFullYear()} by{" "}
         <span className="font-semibold italic">Rahimuj570</span>
       </p>
     </div>

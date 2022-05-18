@@ -24,7 +24,7 @@ const Todo = () => {
   // ========== DELETE FUNCTION ========
   const deleteAction = (id) => {
     const confirm = prompt(
-      `Are you sure to delete this product? Then type "DELETE" to confirm your action.`
+      `Are you sure to delete this Task? Then type "DELETE" to confirm your action.`
     ).toLocaleUpperCase();
     if (confirm === "DELETE") {
       fetch(`http://localhost:5000/delete/${id}`, {
@@ -33,6 +33,7 @@ const Todo = () => {
         res.json().then((data) => {
           const remainingTask = tasks.filter((task) => task._id !== id);
           setTasks(remainingTask);
+          toast.success("Deleted!");
         })
       );
     } else {
@@ -105,7 +106,10 @@ const Todo = () => {
           </button>
         </div>
       </form>
-      <table className=" mt-10 w-5/6 mx-auto smax:w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <h2 className="text-xl font-semibold mt-6 text-center text-sky-300">
+        You Have {tasks?.length} {tasks?.length > 1 ? "Tasks" : "Tasks"}
+      </h2>
+      <table className=" mt-5 w-5/6 mx-auto smax:w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3">
