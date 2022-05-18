@@ -22,7 +22,6 @@ const Todo = () => {
   }, [refetch]);
 
   // ========== DELETE FUNCTION ========
-  // ======== Delete Action =======
   const deleteAction = (id) => {
     const confirm = prompt(
       `Are you sure to delete this product? Then type "DELETE" to confirm your action.`
@@ -40,6 +39,21 @@ const Todo = () => {
       toast.error(`Type "DELETE" in Uppercase to Delete This Product`);
       return;
     }
+  };
+
+  //   ======== UPDATE FUNCTION ==========
+  const UpdateAction = (latestData, id) => {
+    const url = `http://localhost:5000/update/${id}`;
+    fetch(url, {
+      method: "put",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(latestData),
+    }).then((res) =>
+      res.json().then((data) => {
+        setReFetch(!refetch);
+        toast.success("Congratulation!");
+      })
+    );
   };
 
   return (
@@ -115,10 +129,27 @@ const Todo = () => {
               className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
             >
               <td className="px-6 py-4">{task?.name}</td>
-              <td className="px-6 py-4">{task?.task}</td>
+              <td
+                className={
+                  task?.isComplete ? "line-through px-6 py-4" : "px-6 py-4"
+                }
+              >
+                {task?.task}
+              </td>
               <td className="px-6 py-4 text-right">
                 <div>
-                  <FaClipboardCheck className="text-sky-600 cursor-pointer hover:text-sky-500 text-2xl" />
+                  <FaClipboardCheck
+                    onClick={() => {
+                      const completeTask = {
+                        name: task?.name,
+                        task: task?.task,
+                        isComplete: true,
+                      };
+                      UpdateAction(completeTask, task?._id);
+                      console.log(completeTask);
+                    }}
+                    className="text-sky-600 cursor-pointer hover:text-sky-500 text-2xl"
+                  />
                 </div>
               </td>
               <td
