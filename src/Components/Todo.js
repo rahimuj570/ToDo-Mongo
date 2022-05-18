@@ -12,23 +12,48 @@ const Todo = () => {
   const [refetch, setReFetch] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/tasks")
+    fetch("http://localhost:5000/userTask", {
+      headers: {
+        authorization: user?.uid,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setTasks(data));
   }, [refetch]);
+
+  // ========== DELETE FUNCTION ========
+  // ======== Delete Action =======
+  const deleteAction = (id) => {
+    const confirm = prompt(
+      `Are you sure to delete this product? Then type "DELETE" to confirm your action.`
+    ).toLocaleUpperCase();
+    if (confirm === "DELETE") {
+      fetch(`http://localhost:5000/delete/${id}`, {
+        method: "DELETE",
+      }).then((res) =>
+        res.json().then((data) => {
+          const remainingTask = tasks.filter((task) => task._id !== id);
+          setTasks(remainingTask);
+        })
+      );
+    } else {
+      toast.error(`Type "DELETE" in Uppercase to Delete This Product`);
+      return;
+    }
+  };
 
   return (
     <>
       <form
         className="mt-10"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           const data = {
             name: e.target.name.value,
             task: e.target.task.value,
             uid: user.uid,
           };
-          fetch("http://localhost:5000/add", {
+          await fetch("http://localhost:5000/add", {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -84,7 +109,7 @@ const Todo = () => {
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task) => (
+          {tasks?.map((task) => (
             <tr
               key={task?._id}
               className="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
@@ -96,7 +121,10 @@ const Todo = () => {
                   <FaClipboardCheck className="text-sky-600 cursor-pointer hover:text-sky-500 text-2xl" />
                 </div>
               </td>
-              <td className="px-6 py-4 text-right">
+              <td
+                onClick={() => deleteAction(task?._id)}
+                className="px-6 py-4 text-right"
+              >
                 <div>
                   <FaRegTrashAlt className="text-red-600 cursor-pointer hover:text-red-500 text-2xl" />
                 </div>
