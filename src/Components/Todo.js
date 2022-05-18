@@ -12,7 +12,7 @@ const Todo = () => {
   const [refetch, setReFetch] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/userTask", {
+    fetch("https://blooming-anchorage-84923.herokuapp.com/userTask", {
       headers: {
         authorization: user?.uid,
       },
@@ -27,7 +27,7 @@ const Todo = () => {
       `Are you sure to delete this Task? Then type "DELETE" to confirm your action.`
     ).toLocaleUpperCase();
     if (confirm === "DELETE") {
-      fetch(`http://localhost:5000/delete/${id}`, {
+      fetch(`https://blooming-anchorage-84923.herokuapp.com/delete/${id}`, {
         method: "DELETE",
       }).then((res) =>
         res.json().then((data) => {
@@ -44,7 +44,7 @@ const Todo = () => {
 
   //   ======== UPDATE FUNCTION ==========
   const UpdateAction = (latestData, id) => {
-    const url = `http://localhost:5000/update/${id}`;
+    const url = `https://blooming-anchorage-84923.herokuapp.com/update/${id}`;
     fetch(url, {
       method: "put",
       headers: { "content-type": "application/json" },
@@ -68,7 +68,7 @@ const Todo = () => {
             task: e.target.task.value,
             uid: user.uid,
           };
-          await fetch("http://localhost:5000/add", {
+          await fetch("https://blooming-anchorage-84923.herokuapp.com/add", {
             method: "POST",
             headers: {
               "content-type": "application/json",
